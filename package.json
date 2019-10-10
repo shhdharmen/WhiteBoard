@@ -1,11 +1,28 @@
 {
+  "name": "WhiteBoard",
+  "author": {
+    "name": "Dharmen Shah",
+    "email": "shhdharmen@gmail.com"
+  },
+  "description": "White Board - An app to manage notes",
+  "keywords": [
+    "react-native",
+    "notes",
+    "note-app",
+    "note-taking",
+    "note-taking-app"
+  ],
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "build:web": "expo build:web",
+    "resolve-paths:web": "node resolve-paths_web.js",
+    "gh-pages:web": "gh-pages -d web-build",
+    "deploy-pages:web": "yarn build:web && yarn resolve-paths:web && yarn gh-pages:web"
   },
   "dependencies": {
     "expo": "^35.0.0",
@@ -18,6 +35,8 @@
     "@types/react": "^16.8.23",
     "@types/react-native": "^0.57.65",
     "babel-preset-expo": "^7.0.0",
+    "gh-pages": "^2.1.1",
+    "replace-in-file": "^4.1.3",
     "typescript": "^3.4.5"
   },
   "private": true
