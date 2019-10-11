@@ -1,5 +1,6 @@
 {
   "name": "WhiteBoard",
+  "version": "0.1.0",
   "author": {
     "name": "Dharmen Shah",
     "email": "shhdharmen@gmail.com"
@@ -22,7 +23,8 @@
     "build:web": "expo build:web",
     "resolve-paths:web": "node resolve-paths_web.js",
     "gh-pages:web": "gh-pages -d web-build",
-    "deploy-pages:web": "yarn build:web && yarn resolve-paths:web && yarn gh-pages:web"
+    "deploy-pages:web": "yarn build:web && yarn resolve-paths:web && yarn gh-pages:web",
+    "expo:publish": "expo publish"
   },
   "dependencies": {
     "expo": "^35.0.0",
