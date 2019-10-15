@@ -3,24 +3,23 @@ name: Node CI
 on:
   push:
     branches:
-    - master
+      - master
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
 
     steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js 10.x
-      uses: actions/setup-node@v1
-      with:
-        node-version: 10.x
-        yarn-version: 1.19.x
-    - name: npm install, build, and test
-      run: |
-        yarn install
-        yarn expo login -u {{secrets.EXPO_USERNAME}} -p {{secrets.EXPO_PASSWORD}}
-        yarn expo:publish
-      env:
-        CI: true
+      - uses: actions/checkout@v1
+      - name: Use Node.js 10.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+          yarn-version: 1.19.x
+      - name: npm install, build, and test
+        run: |
+          yarn install
+          yarn expo login -u ${{secrets.EXPO_USERNAME}} -p ${{secrets.EXPO_PASSWORD}}
+          yarn expo:publish
+        env:
+          CI: true
