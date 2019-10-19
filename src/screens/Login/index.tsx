@@ -1,5 +1,5 @@
 import React from "react";
-import { AsyncStorage, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import { AuthService } from "../../_shared/services/auth.service";
 import {
   Container,
@@ -16,6 +16,7 @@ import {
   Toast
 } from "native-base";
 import { Formik } from "formik";
+import AsyncStorage from "@react-native-community/async-storage";
 
 const styles = StyleSheet.create({
   content: {
