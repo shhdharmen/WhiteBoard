@@ -3,10 +3,16 @@ import { AppLoading } from "expo";
 import * as Font from "expo-font";
 import { Ionicons } from "@expo/vector-icons";
 import Main from "./src/Main";
-import { StyleProvider } from "native-base";
+import { StyleProvider, Root } from "native-base";
 import getTheme from "./native-base-theme/components";
 
-export default class App extends React.Component {
+type Props = {};
+
+type State = {
+  isReady: boolean;
+};
+
+export default class App extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = {
@@ -30,7 +36,9 @@ export default class App extends React.Component {
 
     return (
       <StyleProvider style={getTheme()}>
-        <Main></Main>
+        <Root>
+          <Main></Main>
+        </Root>
       </StyleProvider>
     );
   }
