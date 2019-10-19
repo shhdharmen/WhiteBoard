@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, AsyncStorage } from "react-native";
+import { StyleSheet } from "react-native";
 import { NavigationStackOptions } from "react-navigation-stack";
 import { Container, Text, Button } from "native-base";
 import { AuthService } from "../../_shared/services/auth.service";

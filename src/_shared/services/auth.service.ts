@@ -3,7 +3,7 @@ import HttpClient from "../helpers/http-client";
 import { API_ENDPOINTS } from "../constants/api-endpoints.constant";
 import { AxiosRequestConfig } from "axios";
 import * as UserModel from 'UserModel';
-import { AsyncStorage } from "react-native";
+import AsyncStorage from '@react-native-community/async-storage';
 
 export const AuthService = {
   login,
