@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, AsyncStorage } from "react-native";
 import { NavigationStackOptions } from "react-navigation-stack";
-import { Container } from "native-base";
-import LottieView from "lottie-react-native";
+import { Container, Text, Button } from "native-base";
+import { AuthService } from "../../_shared/services/auth.service";
 
 const styles = StyleSheet.create({
   container: {
@@ -28,11 +28,16 @@ export default class HomeScreen extends Component<Props, State> {
     const { navigate } = this.props.navigation;
     return (
       <Container style={styles.container}>
-        <LottieView
-          source={require("../../assets/315-loader-ring.json")}
-          autoPlay
-        ></LottieView>
+        <Text>Home Screen</Text>
+        <Button onPress={this._signOutAsync}>
+          <Text>Sign Out</Text>
+        </Button>
       </Container>
     );
   }
+
+  _signOutAsync = async () => {
+    await AuthService.logout();
+    this.props.navigation.navigate("Auth");
+  };
 }
