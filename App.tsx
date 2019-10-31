@@ -22,8 +22,9 @@ export default class App extends React.Component<Props, State> {
 
   async componentDidMount() {
     await Font.loadAsync({
-      Roboto: require("native-base/Fonts/Roboto.ttf"),
-      Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+      Poppins: require("./src/assets/fonts/Poppins-Regular.ttf"),
+      Poppins_Medium: require("./src/assets/fonts/Poppins-Medium.ttf"),
+      AnonymousPro: require("./src/assets/fonts/AnonymousPro-Regular.ttf"),
       ...Ionicons.font
     });
     this.setState({ isReady: true });

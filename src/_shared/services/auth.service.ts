@@ -3,7 +3,7 @@ import HttpClient from "../helpers/http-client";
 import { API_ENDPOINTS } from "../constants/api-endpoints.constant";
 import { AxiosRequestConfig } from "axios";
 import * as UserModel from 'UserModel';
-import AsyncStorage from '@react-native-community/async-storage';
+import { AsyncStorage } from "react-native";
 
 export const AuthService = {
   login,
@@ -16,7 +16,7 @@ function login(identifier: string, password: string) {
     body = JSON.stringify({ identifier, password }),
     url = API_ENDPOINTS.AUTH.LOGIN_POST;
 
-  return new Observable<UserModel.RootObject>(observer => {
+  return new Observable<{ data: UserModel.RootObject }>(observer => {
     return new HttpClient(observer).post(url, options, body);
   });
 }

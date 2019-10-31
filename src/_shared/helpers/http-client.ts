@@ -1,7 +1,7 @@
 import { Subscriber, Observer } from "rxjs";
 import axios, { CancelTokenSource, AxiosRequestConfig, AxiosInstance } from "axios";
-import { AsyncStorage } from "react-native";
 import * as AxiosLogger from 'axios-logger';
+import { AsyncStorage } from "react-native";
 
 export default class HttpClient extends Subscriber<any> {
   source: CancelTokenSource;

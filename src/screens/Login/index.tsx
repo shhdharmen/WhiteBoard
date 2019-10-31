@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, AsyncStorage } from "react-native";
 import { AuthService } from "../../_shared/services/auth.service";
 import {
   Container,
@@ -13,10 +13,13 @@ import {
   Text,
   Spinner,
   Icon,
-  Toast
+  Toast,
+  Left,
+  Right,
+  Body,
+  Title
 } from "native-base";
 import { Formik } from "formik";
-import AsyncStorage from "@react-native-community/async-storage";
 
 const styles = StyleSheet.create({
   content: {
@@ -53,7 +56,11 @@ export default class LoginScreen extends React.Component<Props, State> {
   render() {
     return (
       <Container>
-        <Header />
+        <Header style={{ height: 80 }}>
+          <Body style={{ marginTop: 32 }}>
+            <Title>White Board</Title>
+          </Body>
+        </Header>
         <Content contentContainerStyle={styles.content}>
           <Formik
             initialValues={{ identifier: "", password: "" }}
@@ -64,7 +71,9 @@ export default class LoginScreen extends React.Component<Props, State> {
             {props => (
               <Form style={{ width: 350 }}>
                 <Item fixedLabel>
-                  <Label>Username</Label>
+                  <Label>
+                    <Text>Username</Text>
+                  </Label>
                   <Input
                     disabled={props.isSubmitting}
                     autoCompleteType="email"
@@ -76,7 +85,9 @@ export default class LoginScreen extends React.Component<Props, State> {
                   />
                 </Item>
                 <Item fixedLabel last>
-                  <Label>Password</Label>
+                  <Label>
+                    <Text>Password</Text>
+                  </Label>
                   <Input
                     disabled={props.isSubmitting}
                     autoCompleteType="password"
@@ -97,14 +108,26 @@ export default class LoginScreen extends React.Component<Props, State> {
                   primary
                   onPress={props.handleSubmit}
                   style={{
-                    width: 100,
-                    marginTop: 10,
-                    justifyContent: "center",
+                    width: 130,
                     marginLeft: "auto",
-                    marginRight: "auto"
+                    marginRight: "auto",
+                    marginTop: 16
                   }}
                 >
-                  {props.isSubmitting ? <Spinner /> : <Text>Sign In</Text>}
+                  {props.isSubmitting ? (
+                    <Spinner
+                      color="#fff"
+                      style={{ marginLeft: "auto", marginRight: "auto" }}
+                    />
+                  ) : (
+                    <>
+                      <Text>Sign In</Text>
+                      <Icon
+                        type="FontAwesome"
+                        name="chevron-circle-right"
+                      ></Icon>
+                    </>
+                  )}
                 </Button>
               </Form>
             )}
@@ -118,14 +141,15 @@ export default class LoginScreen extends React.Component<Props, State> {
     const signInSubscriber$ = AuthService.login(identifier, password).subscribe(
       {
         next: async response => {
-          await AsyncStorage.setItem("user", JSON.stringify(response));
+          await AsyncStorage.setItem("user", JSON.stringify(response.data));
           setSubmitting(false);
           this.props.navigation.navigate("App");
         },
         error: err => {
           setSubmitting(false);
-          console.log(err.data.message[0].messages[0].message);
-          Toast.show({ text: err.data.message[0].messages[0].message });
+          Toast.show({
+            text: err.message || err.data.message[0].messages[0].message
+          });
         }
       }
     );
