@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { StyleSheet, Image, AsyncStorage } from "react-native";
+import { StyleSheet, Image, AsyncStorage, RefreshControl } from "react-native";
 import { NavigationStackOptions } from "react-navigation-stack";
 import {
   Container,
@@ -10,9 +10,11 @@ import {
   Text,
   Toast,
   View,
-  Icon
+  Icon,
+  Button
 } from "native-base";
 import LottieView from "lottie-react-native";
+import * as Animatable from "react-native-animatable";
 
 import Loader from "../../_shared/components/Loader";
 import TextLoader from "../../_shared/components/TextLoader";
@@ -38,6 +40,7 @@ type State = {
   isFetchingUserDetails: boolean;
   notes: Note.RootObject[];
   user: User.RootObject;
+  refreshing: boolean;
 };
 
 export default class HomeScreen extends Component<Props, State> {
@@ -46,7 +49,8 @@ export default class HomeScreen extends Component<Props, State> {
     isFetchingNotes: true,
     isFetchingUserDetails: true,
     notes: [],
-    user: {}
+    user: {},
+    refreshing: false
   };
   async componentDidMount() {
     // await AsyncStorage.clear();
@@ -64,31 +68,45 @@ export default class HomeScreen extends Component<Props, State> {
     const { navigate } = this.props.navigation;
     return (
       <Container style={{ padding: 12 }}>
-        <View
-          style={{ flexDirection: "row", paddingTop: 8, alignItems: "center" }}
+        <Content
+          contentContainerStyle={{ flex: 1 }}
+          refreshControl={
+            <RefreshControl
+              refreshing={this.state.refreshing}
+              onRefresh={() => this._onRefresh()}
+            />
+          }
         >
-          <HeaderText size="h1" text="Hi "></HeaderText>
-          {this.state.isFetchingUserDetails ? (
-            <TextLoader></TextLoader>
-          ) : (
-            <HeaderText
-              size="h1"
-              text={this.state.user.user.Firstname}
-            ></HeaderText>
-          )}
-          <Icon
-            // type="FontAwesome"
-            name="md-settings"
-            style={{
-              fontSize: 32,
-              marginLeft: "auto"
-              // marginTop: 16
-            }}
-            onPress={() => navigate("Settings")}
-          ></Icon>
-        </View>
-        <Content contentContainerStyle={styles.content}>
-          {this.state.isFetchingNotes ? (
+          <Animatable.View animation="fadeInLeft" duration={350}>
+            <View
+              style={{
+                flexDirection: "row",
+                paddingTop: 8,
+                alignItems: "flex-start"
+              }}
+            >
+              {this.state.isFetchingUserDetails ? (
+                <TextLoader></TextLoader>
+              ) : (
+                <HeaderText
+                  size="h1"
+                  text={"Hi " + this.state.user.user.firstname}
+                ></HeaderText>
+              )}
+              <Icon
+                // type="FontAwesome"
+                name="md-settings"
+                style={{
+                  fontSize: 32,
+                  marginLeft: "auto",
+                  marginTop: 16
+                }}
+                onPress={() => navigate("Settings")}
+              ></Icon>
+            </View>
+          </Animatable.View>
+          {/* <Content contentContainerStyle={styles.content}> */}
+          {this.state.isFetchingNotes || this.state.refreshing ? (
             <Loader />
           ) : this.state.notes.length ? (
             <Grid style={{ padding: 8 }}>
@@ -109,23 +127,38 @@ export default class HomeScreen extends Component<Props, State> {
                 padding: 8
               }}
             >
-              <Image
-                source={require("../../assets/images/mirage-list-is-empty.png")}
-                style={{
-                  width: 300,
-                  height: 300,
-                  marginLeft: "auto",
-                  marginRight: "auto",
-                  marginBottom: 24
-                }}
-              ></Image>
-              <HeaderText
-                size="h4"
-                text="We couldn't find any notes for you. Why don't you create one?"
-              ></HeaderText>
+              <Animatable.View animation="fadeIn" duration={350}>
+                <Image
+                  source={require("../../assets/images/mirage-list-is-empty.png")}
+                  style={{
+                    width: 300,
+                    height: 300,
+                    marginLeft: "auto",
+                    marginRight: "auto",
+                    marginBottom: 24
+                  }}
+                ></Image>
+              </Animatable.View>
+              <Animatable.View animation="fadeInRight" duration={350}>
+                <HeaderText
+                  size="h4"
+                  text="We couldn't find any notes for you. Why don't you create one?"
+                ></HeaderText>
+              </Animatable.View>
+              <Animatable.View animation="fadeInDown" duration={350}>
+                <Button
+                  primary
+                  style={{ width: 150 }}
+                  onPress={() => navigate("Note")}
+                >
+                  <Text>Create</Text>
+                  <Icon name="md-add" style={{ marginLeft: "auto" }}></Icon>
+                </Button>
+              </Animatable.View>
             </Content>
           )}
         </Content>
+        {/* </Content> */}
       </Container>
     );
   }
@@ -135,10 +168,10 @@ export default class HomeScreen extends Component<Props, State> {
     const fetchNotesSubscriber$ = fetchNotesObservable.subscribe({
       next: response => {
         const notes = response.data;
-        this.setState({ isFetchingNotes: false, notes });
+        this.setState({ isFetchingNotes: false, refreshing: false, notes });
       },
       error: errResponse => {
-        this.setState({ isFetchingNotes: false });
+        this.setState({ isFetchingNotes: false, refreshing: false });
         Toast.show({
           text:
             errResponse.message ||
@@ -154,5 +187,10 @@ export default class HomeScreen extends Component<Props, State> {
   _fetchUserDetails = async () => {
     const user = JSON.parse(await AsyncStorage.getItem("user"));
     this.setState({ user, isFetchingUserDetails: false });
+  };
+
+  _onRefresh = () => {
+    this.setState({ refreshing: true });
+    this._fetchNotes();
   };
 }

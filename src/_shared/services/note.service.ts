@@ -6,15 +6,23 @@ import * as Note from 'Note';
 import HttpClient from "../helpers/http-client";
 
 export const NoteService = {
-    get
+    get,
+    create
 }
 
 async function get() {
     const options: AxiosRequestConfig = { headers: await authHeader() },
         url = API_ENDPOINTS.NOTE.GET;
-    console.log("options", JSON.stringify(options));
-    console.log('=========');
     return new Observable<{ data: Note.RootObject[] }>(observer => {
         return new HttpClient(observer).get(url, options);
+    });
+}
+
+async function create(note: Note.RootObject) {
+    const options: AxiosRequestConfig = { headers: await authHeader() },
+        body = note,
+        url = API_ENDPOINTS.NOTE.POST;
+    return new Observable<{ data: Note.RootObject[] }>(observer => {
+        return new HttpClient(observer).post(url, options, body);
     });
 }

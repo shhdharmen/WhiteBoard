@@ -1,50 +1,39 @@
 declare module "UserModel" {
 
     export interface Role {
-        _id: string;
+        id: string;
         name: string;
         description: string;
         type: string;
-        createdAt: Date;
-        updatedAt: Date;
-        __v: number;
-        id: string;
+        permissions: string[];
+        users: string[];
     }
 
-    export interface Note {
-        tags: any[];
-        _id: string;
-        title: string;
-        content: string;
-        createdAt: Date;
-        updatedAt: Date;
-        __v: number;
-        user: string;
+    export interface Image {
         id: string;
-    }
-
-    export interface User {
-        confirmed: boolean;
-        blocked: boolean;
-        _id: string;
-        username: string;
-        email: string;
+        name: string;
+        hash: string;
+        sha256: string;
+        ext: string;
+        mime: string;
+        size: string;
+        url: string;
         provider: string;
-        createdAt: Date;
-        updatedAt: Date;
-        __v: number;
-        role: Role;
-        tags: any[];
-        categories: any[];
-        notes: Note[];
-        id: string;
-        firstname: string;
-        lastname: string;
+        public_id: string;
+        related: string;
     }
 
     export interface RootObject {
-        jwt: string;
-        user: User;
+        id: string;
+        username: string;
+        email: string;
+        provider: string;
+        confirmed: boolean;
+        blocked: boolean;
+        role: Role;
+        Image: Image;
+        firstname: string;
+        lastname: string;
     }
 
 }

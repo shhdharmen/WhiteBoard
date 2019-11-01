@@ -10,12 +10,14 @@ import ForgotPasswordScreen from "./screens/ForgotPassword";
 import AuthLoadingScreen from "./screens/AuthLoading";
 import createAnimatedSwitchNavigator from "react-navigation-animated-switch";
 import { Transition } from "react-native-reanimated";
+import NoteScreen from "./screens/Note";
 
 const AppStack = createAnimatedSwitchNavigator(
   {
     Home: { screen: HomeScreen },
     Dashboard: { screen: DashboardScreen },
-    Settings: { screen: SettingsScreen }
+    Settings: { screen: SettingsScreen },
+    Note: { screen: NoteScreen }
   },
   {
     // The previous screen will slide to the bottom while the next screen will fade in
@@ -23,10 +25,14 @@ const AppStack = createAnimatedSwitchNavigator(
       <Transition.Together>
         <Transition.Out
           type="slide-bottom"
-          durationMs={400}
+          durationMs={350}
           interpolation="easeIn"
         />
-        <Transition.In type="fade" durationMs={500} />
+        <Transition.In
+          type="slide-right"
+          durationMs={400}
+          interpolation="easeOut"
+        />
       </Transition.Together>
     )
   }
@@ -44,10 +50,14 @@ const AuthStack = createAnimatedSwitchNavigator(
       <Transition.Together>
         <Transition.Out
           type="slide-bottom"
-          durationMs={400}
+          durationMs={350}
           interpolation="easeIn"
         />
-        <Transition.In type="fade" durationMs={500} />
+        <Transition.In
+          type="slide-right"
+          durationMs={400}
+          interpolation="easeOut"
+        />
       </Transition.Together>
     )
   }
