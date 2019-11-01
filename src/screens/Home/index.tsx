@@ -9,8 +9,10 @@ import {
   Content,
   Text,
   Toast,
-  View
+  View,
+  Icon
 } from "native-base";
+import LottieView from "lottie-react-native";
 
 import Loader from "../../_shared/components/Loader";
 import TextLoader from "../../_shared/components/TextLoader";
@@ -62,7 +64,9 @@ export default class HomeScreen extends Component<Props, State> {
     const { navigate } = this.props.navigation;
     return (
       <Container style={{ padding: 12 }}>
-        <View style={{ flexDirection: "row", paddingTop: 8 }}>
+        <View
+          style={{ flexDirection: "row", paddingTop: 8, alignItems: "center" }}
+        >
           <HeaderText size="h1" text="Hi "></HeaderText>
           {this.state.isFetchingUserDetails ? (
             <TextLoader></TextLoader>
@@ -72,6 +76,16 @@ export default class HomeScreen extends Component<Props, State> {
               text={this.state.user.user.Firstname}
             ></HeaderText>
           )}
+          <Icon
+            // type="FontAwesome"
+            name="md-settings"
+            style={{
+              fontSize: 32,
+              marginLeft: "auto"
+              // marginTop: 16
+            }}
+            onPress={() => navigate("Settings")}
+          ></Icon>
         </View>
         <Content contentContainerStyle={styles.content}>
           {this.state.isFetchingNotes ? (

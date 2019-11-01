@@ -5,6 +5,7 @@ import HomeScreen from "./screens/Home";
 import LoginScreen from "./screens/Login";
 import DashboardScreen from "./screens/Dashboard";
 import RegisterScreen from "./screens/Register";
+import SettingsScreen from "./screens/Settings";
 import ForgotPasswordScreen from "./screens/ForgotPassword";
 import AuthLoadingScreen from "./screens/AuthLoading";
 import createAnimatedSwitchNavigator from "react-navigation-animated-switch";
@@ -13,7 +14,8 @@ import { Transition } from "react-native-reanimated";
 const AppStack = createAnimatedSwitchNavigator(
   {
     Home: { screen: HomeScreen },
-    Dashboard: { screen: DashboardScreen }
+    Dashboard: { screen: DashboardScreen },
+    Settings: { screen: SettingsScreen }
   },
   {
     // The previous screen will slide to the bottom while the next screen will fade in
