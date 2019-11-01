@@ -56,11 +56,6 @@ export default class LoginScreen extends React.Component<Props, State> {
   render() {
     return (
       <Container>
-        <Header style={{ height: 80 }}>
-          <Body style={{ marginTop: 32 }}>
-            <Title>White Board</Title>
-          </Body>
-        </Header>
         <Content contentContainerStyle={styles.content}>
           <Formik
             initialValues={{ identifier: "", password: "" }}
@@ -148,7 +143,8 @@ export default class LoginScreen extends React.Component<Props, State> {
         error: err => {
           setSubmitting(false);
           Toast.show({
-            text: err.message || err.data.message[0].messages[0].message
+            text: err.message || err.data.message[0].messages[0].message,
+            duration: 3000
           });
         }
       }

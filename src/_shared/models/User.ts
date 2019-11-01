@@ -38,6 +38,8 @@ declare module "UserModel" {
         categories: any[];
         notes: Note[];
         id: string;
+        firstname: string;
+        lastname: string;
     }
 
     export interface RootObject {

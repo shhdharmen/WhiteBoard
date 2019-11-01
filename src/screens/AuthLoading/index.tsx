@@ -3,6 +3,8 @@ import LottieView from "lottie-react-native";
 import { StyleSheet, AsyncStorage } from "react-native";
 import { Container } from "native-base";
 
+import Loader from "../../_shared/components/Loader";
+
 type Props = {
   navigation: any;
 };
@@ -35,10 +37,7 @@ export default class AuthLoadingScreen extends React.Component<Props, State> {
   render() {
     return (
       <Container style={styles.container}>
-        <LottieView
-          source={require("../../assets/315-loader-ring.json")}
-          autoPlay
-        ></LottieView>
+        <Loader></Loader>
       </Container>
     );
   }
