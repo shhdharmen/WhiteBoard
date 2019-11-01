@@ -88,7 +88,7 @@ export default class NoteScreen extends Component<Props, State> {
             disabled={this.state.isSavingNote}
           ></HeaderText>
           <Textarea
-            style={{ paddingLeft: 20 }}
+            style={{ paddingLeft: 20, fontFamily: "AnonymousPro" }}
             bordered={false}
             underline={false}
             rowSpan={5}
