@@ -3,7 +3,6 @@ import { AsyncStorage } from "react-native";
 export async function authHeader() {
   // return authorization header with jwt token
   let user = JSON.parse(await AsyncStorage.getItem("user"));
-  console.log('user', user);
   if (user && user.jwt) {
     return { "Authorization": "Bearer " + user.jwt };
   } else {

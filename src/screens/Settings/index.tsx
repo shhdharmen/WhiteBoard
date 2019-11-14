@@ -9,33 +9,41 @@ import {
   ListItem,
   Text
 } from "native-base";
-import { View, AsyncStorage } from "react-native";
+import { View, AsyncStorage, TouchableNativeFeedback } from "react-native";
+import { NavigationStackProp } from "react-navigation-stack";
 
 import HeaderText from "../../_shared/components/HeaderText";
 
 type Props = {
-  navigation: any;
+  navigation: NavigationStackProp<{}>;
 };
 
 type State = {};
 
 export default class SettingsScreen extends Component<Props, State> {
   render() {
-    const { navigate } = this.props.navigation;
+    const { goBack } = this.props.navigation;
     return (
       <Container style={{ padding: 12 }}>
         <View
           style={{ flexDirection: "row", paddingTop: 8, alignItems: "center" }}
         >
-          <Icon
-            type="FontAwesome5"
-            name="long-arrow-alt-left"
-            style={{
-              fontSize: 32
-            }}
-            onPress={() => navigate("Home")}
-          ></Icon>
-          <HeaderText size="h1" text=" Settings"></HeaderText>
+          <TouchableNativeFeedback
+            onPress={() => goBack()}
+            background={TouchableNativeFeedback.SelectableBackground()}
+            useForeground
+          >
+            <View style={{ borderRadius: 16 }}>
+              <Icon
+                type="FontAwesome5"
+                name="long-arrow-alt-left"
+                style={{
+                  fontSize: 32
+                }}
+              ></Icon>
+            </View>
+          </TouchableNativeFeedback>
+          <HeaderText size="h2" text=" Settings"></HeaderText>
         </View>
         <Content>
           <List>

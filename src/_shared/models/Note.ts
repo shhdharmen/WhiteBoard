@@ -5,6 +5,7 @@ declare module "Note" {
     }
 
     export interface RootObject {
+        _id?: string;
         id?: string;
         title: string;
         content?: string;

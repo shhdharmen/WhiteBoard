@@ -1,6 +1,11 @@
 import React, { Component } from "react";
-import { StyleSheet, Image, AsyncStorage, RefreshControl } from "react-native";
-import { NavigationStackOptions } from "react-navigation-stack";
+import {
+  StyleSheet,
+  Image,
+  AsyncStorage,
+  TouchableNativeFeedback
+} from "react-native";
+import { NavigationStackProp } from "react-navigation-stack";
 import {
   Container,
   Header,
@@ -13,8 +18,8 @@ import {
   Icon,
   Button
 } from "native-base";
-import LottieView from "lottie-react-native";
 import * as Animatable from "react-native-animatable";
+import MasonryList from "@appandflow/masonry-list";
 
 import Loader from "../../_shared/components/Loader";
 import TextLoader from "../../_shared/components/TextLoader";
@@ -28,11 +33,16 @@ import HeaderText from "../../_shared/components/HeaderText";
 const styles = StyleSheet.create({
   content: {
     flex: 1
+  },
+  addNoteButton: {
+    borderWidth: 0,
+    borderColor: "transparent",
+    backgroundColor: "#f9f9f9"
   }
 });
 
 type Props = {
-  navigation: any;
+  navigation: NavigationStackProp<{}>;
 };
 
 type State = {
@@ -67,57 +77,60 @@ export default class HomeScreen extends Component<Props, State> {
   render() {
     const { navigate } = this.props.navigation;
     return (
-      <Container style={{ padding: 12 }}>
-        <Content
-          contentContainerStyle={{ flex: 1 }}
-          refreshControl={
-            <RefreshControl
-              refreshing={this.state.refreshing}
-              onRefresh={() => this._onRefresh()}
-            />
-          }
-        >
+      <Container>
+        <Content contentContainerStyle={{ flex: 1, padding: 12 }}>
           <Animatable.View animation="fadeInLeft" duration={350}>
             <View
               style={{
                 flexDirection: "row",
-                paddingTop: 8,
-                alignItems: "flex-start"
+                paddingTop: 16,
+                alignItems: "center"
               }}
             >
               {this.state.isFetchingUserDetails ? (
                 <TextLoader></TextLoader>
               ) : (
                 <HeaderText
-                  size="h1"
+                  size="h2"
                   text={"Hi " + this.state.user.user.firstname}
                 ></HeaderText>
               )}
-              <Icon
-                // type="FontAwesome"
-                name="md-settings"
-                style={{
-                  fontSize: 32,
-                  marginLeft: "auto",
-                  marginTop: 16
-                }}
+              <TouchableNativeFeedback
+                background={TouchableNativeFeedback.SelectableBackground()}
+                useForeground
                 onPress={() => navigate("Settings")}
-              ></Icon>
+              >
+                <View style={{ borderRadius: 16, marginLeft: "auto" }}>
+                  <Icon
+                    name="md-settings"
+                    style={{
+                      fontSize: 32
+                    }}
+                  ></Icon>
+                </View>
+              </TouchableNativeFeedback>
             </View>
           </Animatable.View>
           {/* <Content contentContainerStyle={styles.content}> */}
           {this.state.isFetchingNotes || this.state.refreshing ? (
             <Loader />
           ) : this.state.notes.length ? (
-            <Grid style={{ padding: 8 }}>
-              {this.state.notes.map((note, index) => (
-                <Row key={index}>
-                  <Col>
-                    <NotePreview key={index} note={note}></NotePreview>
-                  </Col>
-                </Row>
-              ))}
-            </Grid>
+            <Content>
+              <Grid style={{ padding: 8 }}>
+                {this.state.notes.map((note: Note.RootObject, index) => (
+                  <Row key={index}>
+                    <Col>
+                      <NotePreview
+                        key={index}
+                        note={note}
+                        onPress={() => navigate("Note", { id: note.id })}
+                        onLongPress={() => console.log("note long pressed")}
+                      ></NotePreview>
+                    </Col>
+                  </Row>
+                ))}
+              </Grid>
+            </Content>
           ) : (
             <Content
               contentContainerStyle={{
@@ -158,6 +171,17 @@ export default class HomeScreen extends Component<Props, State> {
             </Content>
           )}
         </Content>
+        {this.state.notes.length ? (
+          <Button
+            bordered
+            style={styles.addNoteButton}
+            onPress={() => navigate("Note")}
+          >
+            <Text>Add Note</Text>
+          </Button>
+        ) : (
+          <></>
+        )}
         {/* </Content> */}
       </Container>
     );

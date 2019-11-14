@@ -5,7 +5,9 @@ export const API_ENDPOINTS = {
         LOGIN_POST: API_URL + '/auth/local'
     },
     NOTE: {
+        DELETE: API_URL + '/notes',
         GET: API_URL + '/notes',
-        POST: API_URL + '/notes'
+        CREATE_POST: API_URL + '/notes',
+        UPDATE_PUT: API_URL + '/notes'
     }
 }

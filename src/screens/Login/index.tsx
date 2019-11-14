@@ -17,15 +17,22 @@ import {
   Left,
   Right,
   Body,
-  Title
+  Title,
+  Grid,
+  View
 } from "native-base";
 import { Formik } from "formik";
+import { Col } from "react-native-easy-grid";
 
 const styles = StyleSheet.create({
   content: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center"
+  },
+  form: {
+    marginBottom: 16,
+    width: 350
   }
 });
 
@@ -64,7 +71,7 @@ export default class LoginScreen extends React.Component<Props, State> {
             }
           >
             {props => (
-              <Form style={{ width: 350 }}>
+              <Form style={styles.form}>
                 <Item fixedLabel>
                   <Label>
                     <Text>Username</Text>
@@ -99,34 +106,34 @@ export default class LoginScreen extends React.Component<Props, State> {
                   </Button>
                 </Item>
                 <Button
+                  iconRight
                   disabled={props.isSubmitting}
                   primary
                   onPress={props.handleSubmit}
                   style={{
-                    width: 130,
                     marginLeft: "auto",
                     marginRight: "auto",
                     marginTop: 16
                   }}
                 >
+                  <Text>Sign In</Text>
                   {props.isSubmitting ? (
-                    <Spinner
-                      color="#fff"
-                      style={{ marginLeft: "auto", marginRight: "auto" }}
-                    />
+                    <Spinner color="#fff" />
                   ) : (
-                    <>
-                      <Text>Sign In</Text>
-                      <Icon
-                        type="FontAwesome"
-                        name="chevron-circle-right"
-                      ></Icon>
-                    </>
+                    <Icon type="FontAwesome" name="chevron-circle-right"></Icon>
                   )}
                 </Button>
               </Form>
             )}
           </Formik>
+          <View style={{ flexDirection: "row" }}>
+            <Button bordered small>
+              <Text>Register Now</Text>
+            </Button>
+            <Button bordered small>
+              <Text>Forgot Password?</Text>
+            </Button>
+          </View>
         </Content>
       </Container>
     );

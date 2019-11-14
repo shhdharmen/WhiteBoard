@@ -25,7 +25,7 @@ const AppStack = createAnimatedSwitchNavigator(
       <Transition.Together>
         <Transition.Out
           type="slide-bottom"
-          durationMs={350}
+          durationMs={400}
           interpolation="easeIn"
         />
         <Transition.In
@@ -34,7 +34,9 @@ const AppStack = createAnimatedSwitchNavigator(
           interpolation="easeOut"
         />
       </Transition.Together>
-    )
+    ),
+    initialRouteName: "Home",
+    backBehavior: "history"
   }
 );
 

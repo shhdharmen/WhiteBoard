@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text } from "react-native";
 import { Item, Input } from "native-base";
 type Props = {
-  size?: "h1" | "h2" | "h3" | "h4";
+  size?: "h1" | "h2" | "h3" | "h4" | "h5";
   text?: string;
   input?: boolean;
   onChangeText?: (text: string) => void;
@@ -20,22 +20,34 @@ export default class HeaderText extends Component<Props, State> {
     h1: 60,
     h2: 48,
     h3: 36,
-    h4: 24
+    h4: 24,
+    h5: 18
   };
   render() {
-    if (this.props.input) {
+    const {
+      input,
+      size = "h4",
+      style,
+      placeholder,
+      onChangeText,
+      autoFocus,
+      disabled,
+      text,
+      value
+    } = this.props;
+    if (input) {
       return (
-        <Item style={this.props.style}>
+        <Item style={style}>
           <Input
-            placeholder={this.props.placeholder}
-            onChangeText={this.props.onChangeText}
+            placeholder={placeholder}
+            onChangeText={onChangeText}
             style={{
               fontFamily: "Poppins_Medium",
-              fontSize: this.sizes.h4
+              fontSize: this.sizes[size]
             }}
-            value={this.props.value}
-            autoFocus={this.props.autoFocus}
-            disabled={this.props.disabled}
+            value={value}
+            autoFocus={autoFocus}
+            disabled={disabled}
           />
         </Item>
       );
@@ -44,10 +56,10 @@ export default class HeaderText extends Component<Props, State> {
       <Text
         style={{
           fontFamily: "Poppins_Medium",
-          fontSize: this.sizes[this.props.size]
+          fontSize: this.sizes[size]
         }}
       >
-        {this.props.text}
+        {text}
       </Text>
     );
   }
