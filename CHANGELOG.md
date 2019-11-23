@@ -3,4 +3,4 @@
 
 ### Bug Fixes
 
-* **pencil:** semantic release config ([9c06a55](https://github.com/shhdharmen/WhiteBoard/commit/9c06a5574f47f1a36afef73098f96aaf426c14d7))
+* **:pencil:** semantic release config ([9c06a55](https://github.com/shhdharmen/WhiteBoard/commit/9c06a5574f47f1a36afef73098f96aaf426c14d7))
