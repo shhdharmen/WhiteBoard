@@ -5,6 +5,10 @@
     "name": "Dharmen Shah",
     "email": "shhdharmen@gmail.com"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/shhdharmen/WhiteBoard.git"
+  },
   "description": "White Board - An app to manage notes",
   "keywords": [
     "react-native",

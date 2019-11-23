@@ -4,11 +4,7 @@
     "slug": "WhiteBoard",
     "privacy": "public",
     "sdkVersion": "35.0.0",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
+    "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -20,13 +16,11 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true
     },
     "description": "White Board - An app to manage notes",
-    "githubUrl": "https://github.com/shhdharmen/WhiteBoard"
+    "githubUrl": "https://github.com/shhdharmen/WhiteBoard.git"
   }
 }
