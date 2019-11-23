@@ -14,7 +14,8 @@ jobs:
       - uses: actions/setup-node@v1
         with:
           node-version: 10.x
-      - run: npm ci
+          yarn-version: 1.19.x
+      - run: yarn ci
       - uses: docker://bycedric/expo-cli-fix-inotify:latest
         with:
           args: publish
