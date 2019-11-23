@@ -2,14 +2,8 @@ import React, { Component } from "react";
 import {
   Container,
   Icon,
-  Grid,
-  Row,
   Content,
-  List,
-  ListItem,
-  Text,
   Form,
-  Textarea,
   Toast,
   Button,
   Input
@@ -18,13 +12,13 @@ import {
   View,
   StyleSheet,
   KeyboardAvoidingView,
-  TextInput,
   Dimensions,
   Keyboard,
-  EmitterSubscription
+  EmitterSubscription,
+  Alert
 } from "react-native";
-import { CirclePicker } from "react-color";
 import ColorPalette from "react-native-color-palette";
+import * as Animatable from "react-native-animatable";
 
 import HeaderText from "../../_shared/components/HeaderText";
 import * as Note from "Note";
@@ -43,7 +37,7 @@ type State = {
   noteId: string;
   inputHeightAdjustment: number;
   keyBoardHeight: number;
-  showColors: string;
+  showColors: boolean;
 };
 
 const styles = StyleSheet.create({
@@ -54,9 +48,18 @@ const styles = StyleSheet.create({
     borderBottomColor: "transparent",
     borderTopColor: "rgba(0, 0, 0, 0.075)",
     backgroundColor: "rgba(0, 0, 0, 0.025)",
-    padding: 16,
+    // padding: 16,
     fontFamily: "Poppins_Medium",
-    flexDirection: "row"
+    flexDirection: "row",
+    justifyContent: "space-between"
+  },
+  colorPaletteContainer: {
+    borderWidth: 1,
+    borderLeftColor: "transparent",
+    borderRightColor: "transparent",
+    borderBottomColor: "transparent",
+    borderTopColor: "rgba(0, 0, 0, 0.075)",
+    backgroundColor: "rgba(0, 0, 0, 0.025)"
   }
 });
 
@@ -71,7 +74,8 @@ export default class NoteScreen extends Component<Props, State> {
     note: {
       title: "",
       color: "#FFF",
-      content: ""
+      content: "",
+      archive: false
     },
     isSavingNote: false,
     isLoading: true,
@@ -82,7 +86,7 @@ export default class NoteScreen extends Component<Props, State> {
       this.confButtonHeight +
       this.extraHeight,
     keyBoardHeight: 0,
-    showColors: "none"
+    showColors: false
   };
   keyboardDidShowListener: EmitterSubscription;
   keyboardDidHideListener: EmitterSubscription;
@@ -200,59 +204,92 @@ export default class NoteScreen extends Component<Props, State> {
               />
             </Form>
           </Content>
-          <View
-            style={{
-              display: this.state.showColors,
-              borderWidth: 1,
-              borderLeftColor: "transparent",
-              borderRightColor: "transparent",
-              borderBottomColor: "transparent",
-              borderTopColor: "rgba(0, 0, 0, 0.075)",
-              backgroundColor: "rgba(0, 0, 0, 0.025)"
-            }}
-          >
-            <ColorPalette
-              onChange={color => {
-                const note = Object.assign(this.state.note, { color });
-                this.setState({ note });
-              }}
-              value={this.state.note.color}
-              colors={[
-                "#FFCDD2",
-                "#E1BEE7",
-                "#BBDEFB",
-                "#C8E6C9",
-                "#CFD8DC",
-                "#FFF"
-              ]}
-              title={""}
-              icon={<Icon type="MaterialIcons" name="check-circle" />}
-            />
+          <View>
+            <Animatable.View
+              animation={this.state.showColors ? "slideInUp" : "slideOutDown"}
+              style={styles.colorPaletteContainer}
+              duration={350}
+            >
+              <ColorPalette
+                onChange={(color: string) => {
+                  const note = Object.assign(this.state.note, { color });
+                  this.setState({ note });
+                }}
+                value={this.state.note.color}
+                colors={[
+                  "#FFCDD2",
+                  "#E1BEE7",
+                  "#BBDEFB",
+                  "#C8E6C9",
+                  "#CFD8DC",
+                  "#FFF"
+                ]}
+                title={""}
+                titleStyles={{ display: "none" }}
+                icon={<Icon type="MaterialIcons" name="check-circle" />}
+              />
+            </Animatable.View>
           </View>
           <View style={styles.confNoteButton}>
-            <Icon
-              type="MaterialIcons"
-              name="color-lens"
-              style={{
-                fontSize: 28
-              }}
+            <Button
+              icon
+              transparent
+              rounded
               onPress={() => {
                 this._toggleColors();
               }}
-            ></Icon>
-            <Icon
-              type="MaterialIcons"
-              name="delete"
-              style={{
-                fontSize: 28,
-                marginLeft: "auto"
-              }}
-              onPress={async () => {
-                if (this.state.noteId) {
-                  await this._deleteNote();
-                }
-              }}
-            ></Icon>
+              disabled={this.state.isSavingNote}
+            >
+              <Icon
+                type="MaterialIcons"
+                name="color-lens"
+                style={{
+                  fontSize: 28
+                }}
+              ></Icon>
+            </Button>
+            <View style={{ flexDirection: "row" }}>
+              <Button
+                icon
+                transparent
+                rounded
+                onPress={async () => {
+                  if (this.state.noteId) {
+                    await this._toggleArchive();
+                  }
+                }}
+                disabled={this.state.isSavingNote || !this.state.noteId}
+              >
+                <Icon
+                  type="MaterialIcons"
+                  name={this.state.note.archive ? "unarchive" : "archive"}
+                  style={{
+                    fontSize: 28
+                  }}
+                ></Icon>
+              </Button>
+              <Button
+                icon
+                transparent
+                rounded
+                onPress={async () => {
+                  if (this.state.noteId) {
+                    await this._confirmDeleteNote();
+                  } else {
+                    goBack();
+                  }
+                }}
+                disabled={this.state.isSavingNote}
+              >
+                <Icon
+                  type="MaterialIcons"
+                  name="delete"
+                  style={{
+                    fontSize: 28
+                  }}
+                ></Icon>
+              </Button>
+            </View>
           </View>
         </KeyboardAvoidingView>
       </Container>
@@ -309,12 +346,26 @@ export default class NoteScreen extends Component<Props, State> {
     };
   };
 
-  _updateNote = async () => {
+  _updateNote = async (archived?: boolean, stayHere?: boolean) => {
     const createNotesObservable = await NoteService.update(this.state.note);
     const createNotesSubscriber$ = createNotesObservable.subscribe({
       next: response => {
         this.setState({ isSavingNote: false });
-        this.props.navigation.goBack();
+        if (!stayHere) {
+          this.props.navigation.goBack();
+        }
+        if (typeof archived === "boolean") {
+          Toast.show({
+            text: "Note has been " + (archived ? "" : "un-") + "archived",
+            duration: 3000,
+            buttonText: "Undo",
+            onClose: async reason => {
+              if (reason === "user") {
+                this._toggleArchive();
+              }
+            }
+          });
+        }
       },
       error: errResponse => {
         this.setState({ isSavingNote: false });
@@ -328,6 +379,22 @@ export default class NoteScreen extends Component<Props, State> {
     this._cleanup = () => {
       createNotesSubscriber$.unsubscribe();
     };
+  };
+
+  _confirmDeleteNote = async () => {
+    new Alert.alert(
+      "Please Confirm",
+      "Do you really want to delete this note?",
+      [
+        {
+          text: "No",
+          onPress: () => {},
+          style: "cancel"
+        },
+        { text: "Yes", onPress: async () => await this._deleteNote() }
+      ],
+      { cancelable: false }
+    );
   };
 
   _deleteNote = async () => {
@@ -352,10 +419,20 @@ export default class NoteScreen extends Component<Props, State> {
   };
 
   _toggleColors = () => {
-    if (this.state.showColors === "none") {
-      this.setState({ showColors: "flex" });
+    if (!this.state.showColors) {
+      this.setState({ showColors: true });
     } else {
-      this.setState({ showColors: "none" });
+      this.setState({ showColors: false });
     }
+  };
+
+  _toggleArchive = () => {
+    this.setState({ isSavingNote: true });
+    const stayHere = true;
+    const archived = !this.state.note.archive;
+    const note = Object.assign(this.state.note, { archive: archived });
+    this.setState({ note }, () => {
+      this._updateNote(archived, stayHere);
+    });
   };
 }

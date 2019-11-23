@@ -29,36 +29,34 @@ export default class NotePreview extends Component<Props, State> {
           background={TouchableNativeFeedback.SelectableBackground()}
           useForeground
         >
-          <View>
-            <Card>
+          <Card>
+            <CardItem
+              header
+              bordered
+              style={{
+                backgroundColor: this.props.note.color,
+                borderRadius: 0
+              }}
+            >
+              <HeaderText text={this.props.note.title} size="h5"></HeaderText>
+            </CardItem>
+            {this.props.note.content ? (
               <CardItem
-                header
-                bordered
                 style={{
                   backgroundColor: this.props.note.color,
                   borderRadius: 0
                 }}
               >
-                <HeaderText text={this.props.note.title} size="h5"></HeaderText>
+                <Body>
+                  <Text lineBreakMode="tail" numberOfLines={7}>
+                    {this.props.note.content}
+                  </Text>
+                </Body>
               </CardItem>
-              {this.props.note.content ? (
-                <CardItem
-                  style={{
-                    backgroundColor: this.props.note.color,
-                    borderRadius: 0
-                  }}
-                >
-                  <Body>
-                    <Text lineBreakMode="tail" numberOfLines={7}>
-                      {this.props.note.content}
-                    </Text>
-                  </Body>
-                </CardItem>
-              ) : (
-                <></>
-              )}
-            </Card>
-          </View>
+            ) : (
+              <></>
+            )}
+          </Card>
         </TouchableNativeFeedback>
       </Animatable.View>
     );
