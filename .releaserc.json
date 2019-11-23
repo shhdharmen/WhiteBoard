@@ -1,0 +1,20 @@
+{
+  "plugins": [
+    "@semantic-release/commit-analyzer",
+    "@semantic-release/release-notes-generator",
+    "@semantic-release/github",
+    "@semantic-release/git",
+    "semantic-release-expo"
+  ],
+  "verifyConditions": ["semantic-release-expo", "@semantic-release/git"],
+  "prepare": [
+    "semantic-release-expo",
+    {
+      "path": "@semantic-release/git",
+      "assets": ["package.json", "package-lock.json", "app.json"]
+    }
+  ],
+  "publish": false,
+  "success": false,
+  "fail": false
+}

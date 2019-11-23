@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  build:
+  publish:
     runs-on: ubuntu-latest
 
     steps:
@@ -23,5 +23,6 @@ jobs:
           yarn install
           yarn expo login -u ${{secrets.EXPO_USERNAME}} -p ${{secrets.EXPO_PASSWORD}}
           yarn expo:publish
+          npx semantic-release
         env:
           CI: true
