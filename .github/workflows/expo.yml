@@ -1,0 +1,23 @@
+name: Expo Publish
+on:
+  push:
+    branches:
+      - master
+jobs:
+  publish:
+    name: Install and publish
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Setup kernel for react native, increase watchers
+        run: echo fs.inotify.max_user_watches=524288 | sudo tee -a /etc/sysctl.conf && sudo sysctl -p
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 10.x
+      - run: npm ci
+      - uses: docker://bycedric/expo-cli-fix-inotify:latest
+        with:
+          args: publish
+        env:
+          EXPO_CLI_USERNAME: ${{ secrets.EXPO_USERNAME }}
+          EXPO_CLI_PASSWORD: ${{ secrets.EXPO_PASSWORD }}

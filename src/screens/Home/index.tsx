@@ -19,7 +19,6 @@ import {
   Button
 } from "native-base";
 import * as Animatable from "react-native-animatable";
-import MasonryList from "@appandflow/masonry-list";
 
 import Loader from "../../_shared/components/Loader";
 import TextLoader from "../../_shared/components/TextLoader";
@@ -120,6 +119,7 @@ export default class HomeScreen extends Component<Props, State> {
                 {this.state.notes.map((note: Note.RootObject, index) => (
                   <Row key={index}>
                     <Col>
+                      {/* TODO: @Dharmen - Try to use react-native-shared-element (https://github.com/IjzerenHein/react-native-shared-element) */}
                       <NotePreview
                         key={index}
                         note={note}
