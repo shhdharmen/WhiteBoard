@@ -1,6 +1,6 @@
 {
   "name": "WhiteBoard",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "author": {
     "name": "Dharmen Shah",
     "email": "shhdharmen@gmail.com"
@@ -55,6 +55,7 @@
     "rxjs": "^6.5.3"
   },
   "devDependencies": {
+    "@semantic-release/changelog": "^3.0.6",
     "@semantic-release/git": "^7.0.18",
     "@types/react": "^16.8.23",
     "@types/react-native": "^0.57.65",

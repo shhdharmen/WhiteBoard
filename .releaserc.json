@@ -1,17 +1,23 @@
 {
   "plugins": [
+    "@semantic-release/changelog",
     "@semantic-release/commit-analyzer",
     "@semantic-release/release-notes-generator",
     "@semantic-release/github",
     "@semantic-release/git",
     "semantic-release-expo"
   ],
-  "verifyConditions": ["semantic-release-expo", "@semantic-release/git"],
+  "verifyConditions": [
+    "semantic-release-expo",
+    "@semantic-release/changelog",
+    "@semantic-release/git"
+  ],
   "prepare": [
     "semantic-release-expo",
+    "@semantic-release/changelog",
     {
       "path": "@semantic-release/git",
-      "assets": ["package.json", "package-lock.json", "app.json"]
+      "assets": ["CHANGELOG.md", "package.json", "yarn.lock", "app.json"]
     }
   ],
   "publish": false,
