@@ -21,18 +21,6 @@
       "supportsTablet": true
     },
     "description": "White Board - An app to manage notes",
-    "githubUrl": "https://github.com/shhdharmen/WhiteBoard.git",
-    "hooks": {
-      "postPublish": [
-        {
-          "file": "sentry-expo/upload-sourcemaps",
-          "config": {
-            "organization": "dharmen-shah",
-            "project": "whiteboard",
-            "authToken": "9f23b5083630466580dae83c8ac677567fae88b1942c48f4ba167788d62f8485"
-          }
-        }
-      ]
-    }
+    "githubUrl": "https://github.com/shhdharmen/WhiteBoard.git"
   }
 }

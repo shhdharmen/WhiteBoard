@@ -23,6 +23,7 @@ export default class NotePreview extends Component<Props, State> {
         duration={350}
         style={this.props.style}
       >
+        {/* TODO: @Dharmen - TouchableNativeFeedback isn't working on iOS */}
         <TouchableNativeFeedback
           onLongPress={this.props.onLongPress}
           onPress={this.props.onPress}
