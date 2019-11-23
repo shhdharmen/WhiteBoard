@@ -9,7 +9,7 @@
       "android",
       "web"
     ],
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -25,12 +25,12 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "1.0.0"
+      "buildNumber": "1.0.1"
     },
     "description": "White Board - An app to manage notes",
     "githubUrl": "https://github.com/shhdharmen/WhiteBoard.git",
     "android": {
-      "versionCode": 350010000
+      "versionCode": 350010001
     }
   }
 }
