@@ -28,6 +28,7 @@ import * as User from "UserModel";
 import { Grid, Col, Row } from "react-native-easy-grid";
 import NotePreview from "../../_shared/components/NotePreview";
 import HeaderText from "../../_shared/components/HeaderText";
+import TouchableFeedback from "../../_shared/components/TouchableFeedback";
 
 const styles = StyleSheet.create({
   content: {
@@ -94,7 +95,7 @@ export default class HomeScreen extends Component<Props, State> {
                   text={"Hi " + this.state.user.user.firstname}
                 ></HeaderText>
               )}
-              <TouchableNativeFeedback
+              <TouchableFeedback
                 background={TouchableNativeFeedback.SelectableBackground()}
                 useForeground
                 onPress={() => navigate("Settings")}
@@ -107,7 +108,7 @@ export default class HomeScreen extends Component<Props, State> {
                     }}
                   ></Icon>
                 </View>
-              </TouchableNativeFeedback>
+              </TouchableFeedback>
             </View>
           </Animatable.View>
           {/* <Content contentContainerStyle={styles.content}> */}

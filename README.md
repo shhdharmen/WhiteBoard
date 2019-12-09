@@ -7,6 +7,7 @@ White Board - An app to manage notes. You can see requirements [here](https://sh
 [![Follows #100DaysOfCode](https://img.shields.io/badge/follows-%23100DaysOfCode-success?style=for-the-badge)](https://shhdharmen.github.io/100-days-of-react-native/)
 [![Made With Expo](https://img.shields.io/badge/made%20with-expo-lightgray?style=for-the-badge)](https://expo.io/)
 [![Uses React Native](https://img.shields.io/badge/uses-react_native-blue?style=for-the-badge)](https://facebook.github.io/react-native/)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg?style=for-the-badge)](https://github.com/semantic-release/semantic-release)
 
 ## Getting Started
 

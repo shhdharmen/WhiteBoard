@@ -13,6 +13,7 @@ import { View, AsyncStorage, TouchableNativeFeedback } from "react-native";
 import { NavigationStackProp } from "react-navigation-stack";
 
 import HeaderText from "../../_shared/components/HeaderText";
+import TouchableFeedback from "../../_shared/components/TouchableFeedback";
 
 type Props = {
   navigation: NavigationStackProp<{}>;
@@ -28,7 +29,7 @@ export default class SettingsScreen extends Component<Props, State> {
         <View
           style={{ flexDirection: "row", paddingTop: 8, alignItems: "center" }}
         >
-          <TouchableNativeFeedback
+          <TouchableFeedback
             onPress={() => goBack()}
             background={TouchableNativeFeedback.SelectableBackground()}
             useForeground
@@ -42,7 +43,7 @@ export default class SettingsScreen extends Component<Props, State> {
                 }}
               ></Icon>
             </View>
-          </TouchableNativeFeedback>
+          </TouchableFeedback>
           <HeaderText size="h2" text=" Settings"></HeaderText>
         </View>
         <Content>

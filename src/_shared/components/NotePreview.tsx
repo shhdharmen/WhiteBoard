@@ -3,7 +3,8 @@ import * as Note from "Note";
 import { Card, CardItem, Text, Body } from "native-base";
 import * as Animatable from "react-native-animatable";
 import HeaderText from "./HeaderText";
-import { TouchableNativeFeedback, View } from "react-native";
+import { TouchableNativeFeedback, View, Platform } from "react-native";
+import TouchableFeedback from "./TouchableFeedback";
 
 type Props = {
   note: Note.RootObject;
@@ -23,8 +24,7 @@ export default class NotePreview extends Component<Props, State> {
         duration={350}
         style={this.props.style}
       >
-        {/* TODO: @Dharmen - TouchableNativeFeedback isn't working on iOS */}
-        <TouchableNativeFeedback
+        <TouchableFeedback
           onLongPress={this.props.onLongPress}
           onPress={this.props.onPress}
           background={TouchableNativeFeedback.SelectableBackground()}
@@ -58,7 +58,7 @@ export default class NotePreview extends Component<Props, State> {
               <></>
             )}
           </Card>
-        </TouchableNativeFeedback>
+        </TouchableFeedback>
       </Animatable.View>
     );
   }
