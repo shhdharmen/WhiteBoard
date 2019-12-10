@@ -16,7 +16,11 @@ import {
   Toast,
   View,
   Icon,
-  Button
+  Button,
+  Item,
+  Input,
+  Thumbnail,
+  Drawer
 } from "native-base";
 import * as Animatable from "react-native-animatable";
 
@@ -35,9 +39,30 @@ const styles = StyleSheet.create({
     flex: 1
   },
   addNoteButton: {
-    borderWidth: 0,
-    borderColor: "transparent",
+    borderBottomWidth: 0,
+    borderLeftWidth: 0,
+    borderRightWidth: 0,
+    borderColor: "#c9c9c9",
     backgroundColor: "#f9f9f9"
+  },
+  searchBox: {
+    marginTop: 8,
+    borderRadius: 8,
+    // borderWidth: 0,
+    borderColor: "#c9c9c9",
+    backgroundColor: "#f9f9f9",
+    paddingLeft: 12,
+    paddingRight: 12,
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.8,
+    shadowRadius: 2
+  },
+  thumbnail: {
+    borderColor: "#c9c9c9",
+    borderWidth: 1,
+    marginLeft: 4
   }
 });
 
@@ -49,12 +74,12 @@ type State = {
   isFetchingNotes: boolean;
   isFetchingUserDetails: boolean;
   notes: Note.RootObject[];
-  user: User.RootObject;
+  user: Partial<User.RootObject>;
   refreshing: boolean;
 };
 
 export default class HomeScreen extends Component<Props, State> {
-  _cleanup = null;
+  _cleanup: null | Function = null;
   state = {
     isFetchingNotes: true,
     isFetchingUserDetails: true,
@@ -87,28 +112,64 @@ export default class HomeScreen extends Component<Props, State> {
                 alignItems: "center"
               }}
             >
-              {this.state.isFetchingUserDetails ? (
+              {this.state.notes.length ? (
+                <Animatable.View animation="fadeInDown" style={{flex:1}} duration={350}>
+                  <Item style={styles.searchBox} regular>
+                    <Button
+                      icon
+                      onPress={() => navigate("Settings")}
+                      transparent
+                    >
+                      <Icon
+                        name="md-menu"
+                        style={{
+                          fontSize: 24
+                        }}
+                      ></Icon>
+                    </Button>
+                    <Input placeholder="Search your notes" />
+                    <Button icon onPress={() => {}} transparent>
+                      <Icon
+                        name="md-search"
+                        style={{
+                          fontSize: 24
+                        }}
+                      ></Icon>
+                    </Button>
+                    <Thumbnail
+                      style={styles.thumbnail}
+                      small
+                      source={{
+                        uri:
+                          "https://avatars0.githubusercontent.com/u/6831283?s=40&v=4"
+                      }}
+                    />
+                  </Item>
+                </Animatable.View>
+              ) : this.state.isFetchingUserDetails ? (
                 <TextLoader></TextLoader>
               ) : (
-                <HeaderText
-                  size="h2"
-                  text={"Hi " + this.state.user.user.firstname}
-                ></HeaderText>
+                <>
+                  <HeaderText
+                    size="h2"
+                    text={"Hi " + this.state.user.user.firstname}
+                  ></HeaderText>
+                  <TouchableFeedback
+                    background={TouchableNativeFeedback.SelectableBackground()}
+                    useForeground
+                    onPress={() => navigate("Settings")}
+                  >
+                    <View style={{ borderRadius: 16, marginLeft: "auto" }}>
+                      <Icon
+                        name="md-settings"
+                        style={{
+                          fontSize: 32
+                        }}
+                      ></Icon>
+                    </View>
+                  </TouchableFeedback>
+                </>
               )}
-              <TouchableFeedback
-                background={TouchableNativeFeedback.SelectableBackground()}
-                useForeground
-                onPress={() => navigate("Settings")}
-              >
-                <View style={{ borderRadius: 16, marginLeft: "auto" }}>
-                  <Icon
-                    name="md-settings"
-                    style={{
-                      fontSize: 32
-                    }}
-                  ></Icon>
-                </View>
-              </TouchableFeedback>
             </View>
           </Animatable.View>
           {/* <Content contentContainerStyle={styles.content}> */}
@@ -120,7 +181,6 @@ export default class HomeScreen extends Component<Props, State> {
                 {this.state.notes.map((note: Note.RootObject, index) => (
                   <Row key={index}>
                     <Col>
-                      {/* TODO: @Dharmen - Try to use react-native-shared-element (https://github.com/IjzerenHein/react-native-shared-element) */}
                       <NotePreview
                         key={index}
                         note={note}
@@ -136,8 +196,6 @@ export default class HomeScreen extends Component<Props, State> {
             <Content
               contentContainerStyle={{
                 flex: 1,
-                // justifyContent: "center",
-                // alignItems: "center",
                 padding: 8
               }}
             >
@@ -210,8 +268,14 @@ export default class HomeScreen extends Component<Props, State> {
   };
 
   _fetchUserDetails = async () => {
-    const user = JSON.parse(await AsyncStorage.getItem("user"));
-    this.setState({ user, isFetchingUserDetails: false });
+    try {
+      const user = JSON.parse((await AsyncStorage.getItem("user")) || "");
+      this.setState({ user, isFetchingUserDetails: false });
+    } catch (error) {
+      Toast.show({
+        text: error.message
+      });
+    }
   };
 
   _onRefresh = () => {

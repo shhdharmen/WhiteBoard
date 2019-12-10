@@ -44,7 +44,7 @@ export default class SettingsScreen extends Component<Props, State> {
               ></Icon>
             </View>
           </TouchableFeedback>
-          <HeaderText size="h2" text=" Settings"></HeaderText>
+          <HeaderText size="h2" text=" White Board"></HeaderText>
         </View>
         <Content>
           <List>

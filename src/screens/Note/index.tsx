@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
 });
 
 export default class NoteScreen extends Component<Props, State> {
-  _cleanup = null;
+  _cleanup: null | Function = null;
   headerHeight = 80;
   titleHeight = 50;
   confButtonHeight = 52;
@@ -88,8 +88,8 @@ export default class NoteScreen extends Component<Props, State> {
     keyBoardHeight: 0,
     showColors: false
   };
-  keyboardDidShowListener: EmitterSubscription;
-  keyboardDidHideListener: EmitterSubscription;
+  keyboardDidShowListener!: EmitterSubscription;
+  keyboardDidHideListener!: EmitterSubscription;
   componentDidMount() {
     this._handleNote();
     this._handleKeyboard();
@@ -382,7 +382,7 @@ export default class NoteScreen extends Component<Props, State> {
   };
 
   _confirmDeleteNote = async () => {
-    new Alert.alert(
+    Alert.alert(
       "Please Confirm",
       "Do you really want to delete this note?",
       [
