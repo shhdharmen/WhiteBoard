@@ -67,7 +67,7 @@
     "expo-cli": "^3.11.1",
     "gh-pages": "^2.1.1",
     "replace-in-file": "^4.1.3",
-    "semantic-release": "^15.13.31",
+    "semantic-release": "^17.2.3",
     "semantic-release-expo": "^2.2.3",
     "typescript": "^3.7.3"
   },
